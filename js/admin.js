@@ -1,57 +1,66 @@
-import { Pelicula } from "./classPelicula.js"; 
+import { Pelicula } from "./classPelicula.js";
 
-let listaPeliculas = [];
+//getitem de local storage es paara leer un item. json.parse (pasamos algo en objeto json para transformarlo en codigo legible de js)
+let listaPeliculas = JSON.parse(localStorage.getItem('listaPeliculasKey')) || [];
 
 //codigo para instanciar una ventana modal formularioPelicula
-const modalPelicula = new bootstrap.Modal(document.getElementById('formularioPelicula'));
-const btnCrearPelicula = document.getElementById('btnCrearPelicula');
-let codigo = document.getElementById('codigo');
-let titulo = document.getElementById('titulo');
-let descripcion = document.getElementById('descripcion');
-let imagen = document.getElementById('imagen');
-let genero = document.getElementById('genero');
-let formulario = document.getElementById('formPeliculas');
-
-
+const modalPelicula = new bootstrap.Modal(
+  document.getElementById("formularioPelicula")
+);
+const btnCrearPelicula = document.getElementById("btnCrearPelicula");
+let codigo = document.getElementById("codigo");
+let titulo = document.getElementById("titulo");
+let descripcion = document.getElementById("descripcion");
+let imagen = document.getElementById("imagen");
+let genero = document.getElementById("genero");
+let formulario = document.getElementById("formPeliculas");
 
 //aqui agrego los event
 
-btnCrearPelicula.addEventListener('click', mostrarFormulario);
-formulario.addEventListener('submit', guardarPelicula);
+btnCrearPelicula.addEventListener("click", mostrarFormulario);
+formulario.addEventListener("submit", guardarPelicula);
 
-
-function mostrarFormulario(){
-    modalPelicula.show();
-    console.log(uuidv4()); //este metodo genera identificadores unicos alfanumericos
-    //mostrar el identifiicador unico cargado en el codgo que se vea
-    codigo.value = uuidv4();
-
-
+function mostrarFormulario() {
+  modalPelicula.show();
+  console.log(uuidv4()); //este metodo genera identificadores unicos alfanumericos
+  //mostrar el identifiicador unico cargado en el codgo que se vea
+  codigo.value = uuidv4();
 }
 
-function guardarPelicula(e){
-    e.preventDefault();
-    //preguntar todas las validaciones
-    //realizar el if grande
+function guardarPelicula(e) {
+  e.preventDefault();
+  //preguntar todas las validaciones
+  //realizar el if grande
 
-    //crear un objeto pelicula
-    let nuevaPelicula = new Pelicula(codigo.value,titulo.value
-        ,descripcion.value,imagen.value,genero.value)
-    //guardar la pelicula en el arreglo
-    listaPeliculas.push(nuevaPelicula);
-    console.log(listaPeliculas);
-    
-    //limpiar el formulario para darle de alta a otra pelicula mas 
-limpiarFormulario();
-modalPelicula.hide();
-
+  //crear un objeto pelicula
+  let nuevaPelicula = new Pelicula(
+    codigo.value,
+    titulo.value,
+    descripcion.value,
+    imagen.value,
+    genero.value
+  );
+  //guardar la pelicula en el arreglo
+  listaPeliculas.push(nuevaPelicula);
+  console.log(listaPeliculas);
+  guardarPeliculasEnLocalStorage();
+  //limpiar el formulario para darle de alta a otra pelicula mas
+  limpiarFormulario();
+  //cerrar ventaana modal
+  modalPelicula.hide();
 }
 
-function limpiarFormulario(){
-    formulario.reset(); //reset resetea el value de todo lo que estaa en el form
-    //resetear las clases de cada uno de los elementos maquetadoss
-    titulo.className = 'form-control';
-    descripcion.className = 'form-control';
-    genero.className = 'form-control';
-    imagen.className = 'form-control';
+function limpiarFormulario() {
+  formulario.reset(); //reset resetea el value de todo lo que estaa en el form
+  //resetear las clases de cada uno de los elementos maquetadoss
+  titulo.className = "form-control";
+  descripcion.className = "form-control";
+  genero.className = "form-control";
+  imagen.className = "form-control";
+}
+
+function guardarPeliculasEnLocalStorage() {
+  //el objeto localstorage tiene acceso directo al navegador
+  //setitem para guardar el archivo.. se pone una palabra que yo invento para acceder al local 2do parametro el value que son los datos que voy a guaradar en formato json son el arreglo, para transformarlo en formato json se pone (string numeber, objetos, arreglos, un texto, etc, menos los undifined) se pone JSON.stringify(EL ARREGLO)
+  localStorage.setItem("listaPeliculasKey", JSON.stringify(listaPeliculas));
 }
