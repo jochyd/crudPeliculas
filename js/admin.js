@@ -35,7 +35,7 @@ function cargaInicial() {
 function crearFila(itemPelicula) {
   //creando la tabla
   let tablaPeliculas = document.getElementById("tablaPeliculas");
-  tablaPeliculas.innerHTML = `<tr>
+  tablaPeliculas.innerHTML +=`<tr>
    <th scope="row">${itemPelicula.codigo}</th>
    <td>${itemPelicula.titulo}</td>
    <td>
@@ -84,6 +84,8 @@ function guardarPelicula(e) {
   guardarPeliculasEnLocalStorage();
   //limpiar el formulario para darle de alta a otra pelicula mas
   limpiarFormulario();
+  //dibujar una fila en la tabla
+  crearFila(nuevaPelicula);
   //cerrar ventaana modal
   modalPelicula.hide();
 }
