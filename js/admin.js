@@ -1,7 +1,8 @@
 import { Pelicula } from "./classPelicula.js";
 
 //getitem de local storage es paara leer un item. json.parse (pasamos algo en objeto json para transformarlo en codigo legible de js)
-let listaPeliculas = JSON.parse(localStorage.getItem('listaPeliculasKey')) || [];
+let listaPeliculas =
+  JSON.parse(localStorage.getItem("listaPeliculasKey")) || [];
 
 //codigo para instanciar una ventana modal formularioPelicula
 const modalPelicula = new bootstrap.Modal(
@@ -19,6 +20,43 @@ let formulario = document.getElementById("formPeliculas");
 
 btnCrearPelicula.addEventListener("click", mostrarFormulario);
 formulario.addEventListener("submit", guardarPelicula);
+
+cargaInicial();
+// esta funcion va a mostrar la tabla con datos si es q hay datos para mostrar
+function cargaInicial() {
+  if (listaPeliculas.length > 0) {
+    //dibujar filas de la tabla... d
+    listaPeliculas.forEach((itemPelicula) => {
+      crearFila(itemPelicula);
+    });
+  }
+}
+
+function crearFila(itemPelicula) {
+  //creando la tabla
+  let tablaPeliculas = document.getElementById("tablaPeliculas");
+  tablaPeliculas.innerHTML = `<tr>
+   <th scope="row">${itemPelicula.codigo}</th>
+   <td>${itemPelicula.titulo}</td>
+   <td>
+     ${itemPelicula.descripcion}
+   </td>
+   <td>
+    ${itemPelicula.imagen}
+   </td>
+   <td>
+     ${itemPelicula.genero}
+   </td>
+   <td>
+     <button type="button" class="btn btn-danger">
+       <i class="bi bi-file-x-fill colorIncono fs-5"></i>
+     </button>
+     <button type="button" class="btn btn-warning mt-2">
+       <i class="bi bi-pencil-square fs-5"></i>
+     </button>
+   </td>
+ </tr>`;
+}
 
 function mostrarFormulario() {
   modalPelicula.show();
