@@ -51,7 +51,7 @@ function crearFila(itemPelicula) {
    <button type="button" class="btn btn-danger" onclick="borrarPelicula('${itemPelicula.codigo}')">
      <i class="bi bi-file-x-fill colorIncono fs-5"></i>
    </button>
-   <button type="button" class="btn btn-warning mt-2">
+   <button type="button" class="btn btn-warning mt-2" onclick="editarPelicula('${itemPelicula.codigo}')">
      <i class="bi bi-pencil-square fs-5"></i>
    </button>
  </td>
@@ -151,3 +151,19 @@ window.borrarPelicula = function (codigo) {
     }
   });
 };
+
+window.editarPelicula = function (codigoBuscado){
+  //buscar del arreglo de peliculas la pelicula seleccionada
+  // let peliculaBuscada = listaPeliculas.find((pelicula)=>{return pelicula.codigo === codigo});
+  let peliculaBuscada = listaPeliculas.find((pelicula)=>pelicula.codigo === codigoBuscado); //return implicito
+
+  //cargar los datos de la pelicula seleccionada en el formulario
+  codigo.value = peliculaBuscada.codigo;
+  titulo.value = peliculaBuscada.titulo;
+  descripcion.value = peliculaBuscada.descripcion;
+  imagen.value = peliculaBuscada.imagen;
+  genero.value = peliculaBuscada.genero;
+  //abrir ventaniita modal
+  modalPelicula.show()
+  
+}
