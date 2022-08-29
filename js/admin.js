@@ -15,6 +15,8 @@ let descripcion = document.getElementById("descripcion");
 let imagen = document.getElementById("imagen");
 let genero = document.getElementById("genero");
 let formulario = document.getElementById("formPeliculas");
+//variable para controlar si creo o actualizo una pelicula 
+let peliculaNueva = true; //cuando pelicula nueva sea igual a true, quiero crear la pelicula, en caso contrario quiero actualizar la pelicula.
 
 //aqui agrego los event
 
@@ -28,6 +30,8 @@ function cargaInicial() {
     //dibujar filas de la tabla... d
     listaPeliculas.forEach((itemPelicula) => {
       crearFila(itemPelicula);
+      console.log('prueba');
+
     });
   }
 }
@@ -60,6 +64,9 @@ function crearFila(itemPelicula) {
 
 
 function mostrarFormulario() {
+  peliculaNueva = true;
+  limpiarFormulario();
+
   modalPelicula.show();
   console.log(uuidv4()); //este metodo genera identificadores unicos alfanumericos
   //mostrar el identifiicador unico cargado en el codgo que se vea
@@ -70,7 +77,16 @@ function guardarPelicula(e) {
   e.preventDefault();
   //preguntar todas las validaciones
   //realizar el if grande
-
+  if(peliculaNueva === true){
+    //crear la pelicula
+    crearPeliculaNueva();
+  }else{
+    //aqui quiero modificar la pelicula
+    actualizarPelicula();}
+  
+  
+}
+function crearPeliculaNueva(){
   //crear un objeto pelicula
   let nuevaPelicula = new Pelicula(
     codigo.value,
@@ -109,7 +125,7 @@ function borrarTabla(){
   let tablaPeliculas = document.getElementById("tablaPeliculas");
   tablaPeliculas.innerHTML = "";
 }
-cargarInicial();
+
 //muestre la tabla con datos
 function cargarInicial(){
   if(listaPeliculas.length >0){
@@ -153,6 +169,8 @@ window.borrarPelicula = function (codigo) {
 };
 
 window.editarPelicula = function (codigoBuscado){
+  peliculaNueva = false;
+  limpiarFormulario();
   //buscar del arreglo de peliculas la pelicula seleccionada
   // let peliculaBuscada = listaPeliculas.find((pelicula)=>{return pelicula.codigo === codigo});
   let peliculaBuscada = listaPeliculas.find((pelicula)=>pelicula.codigo === codigoBuscado); //return implicito
@@ -165,5 +183,31 @@ window.editarPelicula = function (codigoBuscado){
   genero.value = peliculaBuscada.genero;
   //abrir ventaniita modal
   modalPelicula.show()
-  
+
+}
+function actualizarPelicula(){
+  console.log('actualizando pelicula...');
+  //buscaar la posicion de la pelicula que estoy editando en el arreglo
+  let posicionPeliBuscada = listaPeliculas.findIndex((pelicula)=>pelicula.codigo === codigo.value);
+  console.log(posicionPeliBuscada)
+
+  //actualizar los datos de la pelicula que estoy editando
+  listaPeliculas[posicionPeliBuscada].titulo = titulo.value;
+  listaPeliculas[posicionPeliBuscada].descripcion = descripcion.value;
+  listaPeliculas[posicionPeliBuscada].imagen = imagen.value;
+  listaPeliculas[posicionPeliBuscada].genero = genero.value;
+
+  //actualizar el localstorage
+  guardarPeliculasEnLocalStorage();
+
+  //actualizar la tabla
+  borrarTabla();
+  cargarInicial();
+
+  //cerrar la ventana modal 
+  modalPelicula.hide();
+  limpiarFormulario();
+
+  //indicarle lo que sucedio al usuario
+  Swal.fire("Pelicula!", "La pelicula seleccionada correctamente modificada", "success");
 }
