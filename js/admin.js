@@ -15,7 +15,7 @@ let descripcion = document.getElementById("descripcion");
 let imagen = document.getElementById("imagen");
 let genero = document.getElementById("genero");
 let formulario = document.getElementById("formPeliculas");
-//variable para controlar si creo o actualizo una pelicula 
+//variable para controlar si creo o actualizo una pelicula
 let peliculaNueva = true; //cuando pelicula nueva sea igual a true, quiero crear la pelicula, en caso contrario quiero actualizar la pelicula.
 
 //aqui agrego los event
@@ -30,8 +30,7 @@ function cargaInicial() {
     //dibujar filas de la tabla... d
     listaPeliculas.forEach((itemPelicula) => {
       crearFila(itemPelicula);
-      console.log('prueba');
-
+      console.log("prueba");
     });
   }
 }
@@ -62,7 +61,6 @@ function crearFila(itemPelicula) {
  </tr>`;
 }
 
-
 function mostrarFormulario() {
   peliculaNueva = true;
   limpiarFormulario();
@@ -77,16 +75,15 @@ function guardarPelicula(e) {
   e.preventDefault();
   //preguntar todas las validaciones
   //realizar el if grande
-  if(peliculaNueva === true){
+  if (peliculaNueva === true) {
     //crear la pelicula
     crearPeliculaNueva();
-  }else{
+  } else {
     //aqui quiero modificar la pelicula
-    actualizarPelicula();}
-  
-  
+    actualizarPelicula();
+  }
 }
-function crearPeliculaNueva(){
+function crearPeliculaNueva() {
   //crear un objeto pelicula
   let nuevaPelicula = new Pelicula(
     codigo.value,
@@ -121,16 +118,18 @@ function guardarPeliculasEnLocalStorage() {
   //setitem para guardar el archivo.. se pone una palabra que yo invento para acceder al local 2do parametro el value que son los datos que voy a guaradar en formato json son el arreglo, para transformarlo en formato json se pone (string numeber, objetos, arreglos, un texto, etc, menos los undifined) se pone JSON.stringify(EL ARREGLO)
   localStorage.setItem("listaPeliculasKey", JSON.stringify(listaPeliculas));
 }
-function borrarTabla(){
+function borrarTabla() {
   let tablaPeliculas = document.getElementById("tablaPeliculas");
   tablaPeliculas.innerHTML = "";
 }
 
 //muestre la tabla con datos
-function cargarInicial(){
-  if(listaPeliculas.length >0){
+function cargarInicial() {
+  if (listaPeliculas.length > 0) {
     //dibujar filas de la tabla
-    listaPeliculas.forEach((itemPelicula)=>{crearFila(itemPelicula)})
+    listaPeliculas.forEach((itemPelicula) => {
+      crearFila(itemPelicula);
+    });
   }
 }
 //esto es para cuando es de tipo modulo y en el maquetado ponenmos onclick
@@ -163,17 +162,23 @@ window.borrarPelicula = function (codigo) {
       borrarTabla();
       cargarInicial();
 
-      Swal.fire("Pelicula!", "La pelicula seleccionada fue eliminada", "success");
+      Swal.fire(
+        "Pelicula!",
+        "La pelicula seleccionada fue eliminada",
+        "success"
+      );
     }
   });
 };
 
-window.editarPelicula = function (codigoBuscado){
+window.editarPelicula = function (codigoBuscado) {
   peliculaNueva = false;
   limpiarFormulario();
   //buscar del arreglo de peliculas la pelicula seleccionada
   // let peliculaBuscada = listaPeliculas.find((pelicula)=>{return pelicula.codigo === codigo});
-  let peliculaBuscada = listaPeliculas.find((pelicula)=>pelicula.codigo === codigoBuscado); //return implicito
+  let peliculaBuscada = listaPeliculas.find(
+    (pelicula) => pelicula.codigo === codigoBuscado
+  ); //return implicito
 
   //cargar los datos de la pelicula seleccionada en el formulario
   codigo.value = peliculaBuscada.codigo;
@@ -182,14 +187,15 @@ window.editarPelicula = function (codigoBuscado){
   imagen.value = peliculaBuscada.imagen;
   genero.value = peliculaBuscada.genero;
   //abrir ventaniita modal
-  modalPelicula.show()
-
-}
-function actualizarPelicula(){
-  console.log('actualizando pelicula...');
+  modalPelicula.show();
+};
+function actualizarPelicula() {
+  console.log("actualizando pelicula...");
   //buscaar la posicion de la pelicula que estoy editando en el arreglo
-  let posicionPeliBuscada = listaPeliculas.findIndex((pelicula)=>pelicula.codigo === codigo.value);
-  console.log(posicionPeliBuscada)
+  let posicionPeliBuscada = listaPeliculas.findIndex(
+    (pelicula) => pelicula.codigo === codigo.value
+  );
+  console.log(posicionPeliBuscada);
 
   //actualizar los datos de la pelicula que estoy editando
   listaPeliculas[posicionPeliBuscada].titulo = titulo.value;
@@ -204,10 +210,15 @@ function actualizarPelicula(){
   borrarTabla();
   cargarInicial();
 
-  //cerrar la ventana modal 
+  //cerrar la ventana modal
   modalPelicula.hide();
   limpiarFormulario();
 
   //indicarle lo que sucedio al usuario
-  Swal.fire("Pelicula!", "La pelicula seleccionada correctamente modificada", "success");
+  Swal.fire(
+    "Pelicula!",
+    "La pelicula seleccionada correctamente modificada",
+    "success"
+  );
 }
+
