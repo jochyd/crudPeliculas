@@ -18,10 +18,19 @@ function crearPelicula(itemPelicula){
        />
        <div class="card-body">
         <h5 class="card-title">${itemPelicula.titulo}</h5>
-        <a href="#" class="btn btn-primary">Ver detalles</a>
+        <button class="btn btn-primary" onclick="verPaginaDetalle('${itemPelicula
+        .codigo}')">Ver detalles</button>
        </div>
      </div>
     </article>`
 }
 
 cargarInicial();
+
+function verPaginaDetalle(codigo){
+    console.log(codigo);
+    //construimos la ruta para naavegar a la web de detalle con un parametro 
+
+    console.log(window.location.origin + '/pages/detalle.html?codigo='+codigo);
+    window.location.href = window.location.origin + '/pages/detalle.html?codigo='+codigo;
+}
